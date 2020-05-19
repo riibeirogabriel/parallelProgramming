@@ -1,5 +1,5 @@
 # parallelProgramming
-In this project, is used parallel programming to to solve several problems (Building)
+In this project, is used parallel programming to to solve math and compute problems (Building)
 
 ## matrixesMultiply
 
