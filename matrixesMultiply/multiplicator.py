@@ -1,46 +1,34 @@
 import threading
 import time
-m1_100 = "matrixes/m1_100_100.txt"
-m1_500 = "matrixes/m1_500_500.txt"
-m2_100 = "matrixes/m2_100_100.txt"
-m2_500 = "matrixes/m2_500_500.txt"
-m1_4 = "matrixes/m1_3_3.txt"
-m2_4 = "matrixes/m2_3_3.txt"
-matrix_size = 4
-matrixA = [[0 for x in range(matrix_size)]
-           for y in range(matrix_size)]
-matrixB = [[0 for x in range(matrix_size)]
-           for y in range(matrix_size)]
-matrixResult = [[0 for x in range(matrix_size)]
-                for y in range(matrix_size)]
+import utils as utils
 
+MATRIX_SIZE = 4
 
-def read_matrix(file_name, size, typeMatrix):
-    global matrixA, matrixB
-    file = open(file_name, "r")
-    Matrix = list()
-    file.read(1)
-    for i in file:
-        Matrix.append(list(map(int, i.split())))
-    if(typeMatrix == "A"):
-        matrixA = Matrix
-    else:
-        matrixB = Matrix
+threads = []
+matrix_a = utils.generate_matrix(MATRIX_SIZE)
+matrix_b = utils.generate_matrix(MATRIX_SIZE)
+matrix_result = utils.generate_matrix(MATRIX_SIZE)
+matrix_aux = utils.generate_aux_matrix(MATRIX_SIZE)
 
 
 def run():
-    for i in range(matrix_size):
-        for j in range(matrix_size):
+    for i in range(MATRIX_SIZE):
+        for j in range(MATRIX_SIZE):
             result = 0
-            for k in range(matrix_size):
-                result += matrixA[i][k] * matrixB[k][j]
-            matrixResult[i][j] = result
+
+            for k in range(MATRIX_SIZE):
+                result += matrix_a[i][k] * matrix_b[k][j]
+
+            matrix_result[i][j] = result
 
 
 if __name__ == "__main__":
-    read_matrix(m1_4, matrix_size, "A")
-    read_matrix(m2_4, matrix_size, "B")
+    matrix_a = utils.read_matrix(utils.M1_4)
+    matrix_b = utils.read_matrix(utils.M2_4)
+
     start = time.time()
     run()
     end = time.time()
+
     print(end - start)
+    print(matrix_result)

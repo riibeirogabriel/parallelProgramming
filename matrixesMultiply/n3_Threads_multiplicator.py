@@ -1,76 +1,62 @@
 import threading
 from concurrent.futures import ThreadPoolExecutor, wait
 import time
+import utils as utils
 
-m1_100 = "matrixes/m1_100_100.txt"
-m1_500 = "matrixes/m1_500_500.txt"
-m2_100 = "matrixes/m2_100_100.txt"
-m2_500 = "matrixes/m2_500_500.txt"
-m1_4 = "matrixes/m1_3_3.txt"
-m2_4 = "matrixes/m2_3_3.txt"
-matrix_size = 4
+MATRIX_SIZE = 4
 
-n2ThreadsPool = ThreadPoolExecutor(max_workers=250)
+n2_threads_pool = ThreadPoolExecutor(max_workers=20)
 threads = []
-matrixA = [[0 for x in range(matrix_size)]
-           for y in range(matrix_size)]
-matrixB = [[0 for x in range(matrix_size)]
-           for y in range(matrix_size)]
-matrixResult = [[0 for x in range(matrix_size)]
-                for y in range(matrix_size)]
-matrixAux = [[0 for x in range(matrix_size)]
-             for y in range(matrix_size * matrix_size)]
+matrix_a = utils.generate_matrix(MATRIX_SIZE)
+matrix_b = utils.generate_matrix(MATRIX_SIZE)
+matrix_result = utils.generate_matrix(MATRIX_SIZE)
+matrix_aux = utils.generate_aux_matrix(MATRIX_SIZE)
 
 
-def n2Threads(id, line, collumn, iterator):
-    global matrixResult, matrixA, matrixB
-    matrixAux[id][iterator] = matrixA[line][iterator] * \
-                              matrixB[iterator][collumn]
+def n2_threads(id, line, column, iterator):
+    global matrix_result, matrix_a, matrix_b
+    matrix_aux[id][iterator] = matrix_a[line][iterator] * \
+        matrix_b[iterator][column]
 
 
-def plusThreads(index):
-    global matrixResult, matrixA, matrixB
+def plus_threads(index):
+    global matrix_result, matrix_a, matrix_b
     result = 0
-    for i in range(matrix_size):
-        result += matrixAux[index][i]
-    line = int(index / matrix_size)
-    collumn = int(index % matrix_size)
-    matrixResult[line][collumn] = result
 
+    for i in range(MATRIX_SIZE):
+        result += matrix_aux[index][i]
 
-def read_matrix(file_name, size, typeMatrix):
-    global matrixA, matrixB
-    file = open(file_name, "r")
-    Matrix = list()
-    file.read(1)
-    for i in file:
-        Matrix.append(list(map(int, i.split())))
-    if(typeMatrix == "A"):
-        matrixA = Matrix
-    else:
-        matrixB = Matrix
+    line = int(index / MATRIX_SIZE)
+    column = int(index % MATRIX_SIZE)
+    matrix_result[line][column] = result
 
 
 def run_threads():
     global threads
     count = 0
-    for i in range(matrix_size):
-        for j in range(matrix_size):
-            for k in range(matrix_size):
-                threads.append(n2ThreadsPool.submit(n2Threads(count, i, j, k)))
+    for i in range(MATRIX_SIZE):
+        for j in range(MATRIX_SIZE):
+            for k in range(MATRIX_SIZE):
+                threads.append(
+                    n2_threads_pool.submit(
+                        n2_threads(
+                            count, i, j, k)))
             count += 1
     wait(threads)
     threads.clear()
-    for i in range(matrix_size * matrix_size):
-        threads.append(n2ThreadsPool.submit(plusThreads(i)))
+
+    for i in range(MATRIX_SIZE * MATRIX_SIZE):
+        threads.append(n2_threads_pool.submit(plus_threads(i)))
     wait(threads)
 
 
 if __name__ == "__main__":
-    read_matrix(m1_4, matrix_size, "A")
-    read_matrix(m2_4, matrix_size, "B")
+    matrix_a = utils.read_matrix(utils.M1_4)
+    matrix_b = utils.read_matrix(utils.M2_4)
+
     start = time.time()
     run_threads()
     end = time.time()
+
     print(end - start)
-    # print(matrixResult)
+    print(matrix_result)
