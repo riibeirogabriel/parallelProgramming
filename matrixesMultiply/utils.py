@@ -1,9 +1,11 @@
-M1_100 = "matrixes/m1_100_100.txt"
-M1_500 = "matrixes/m1_500_500.txt"
-M2_100 = "matrixes/m2_100_100.txt"
-M2_500 = "matrixes/m2_500_500.txt"
-M1_4 = "matrixes/m1_3_3.txt"
-M2_4 = "matrixes/m2_3_3.txt"
+MATRIX_A_4_LINES = "matrixes/matrix_a_4_lines.txt"
+MATRIX_B_4_LINES = "matrixes/matrix_b_4_lines.txt"
+
+MATRIX_A_100_LINES = "matrixes/matrix_a_100_lines.txt"
+MATRIX_B_100_LINES = "matrixes/matrix_b_100_lines.txt"
+
+MATRIX_A_500_LINES = "matrixes/matrix_a_500_lines.txt"
+MATRIX_B_500_LINES = "matrixes/matrix_b_500_lines.txt"
 
 
 def read_matrix(file_name):

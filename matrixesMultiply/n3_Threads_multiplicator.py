@@ -51,8 +51,8 @@ def run_threads():
 
 
 if __name__ == "__main__":
-    matrix_a = utils.read_matrix(utils.M1_4)
-    matrix_b = utils.read_matrix(utils.M2_4)
+    matrix_a = utils.read_matrix(utils.MATRIX_A_4_LINES)
+    matrix_b = utils.read_matrix(utils.MATRIX_B_4_LINES)
 
     start = time.time()
     run_threads()
