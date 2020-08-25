@@ -4,7 +4,7 @@ import time
 import utils as utils
 
 
-MATRIX_SIZE = 100
+MATRIX_SIZE = 4
 
 plus_thread_pool = ThreadPoolExecutor(max_workers=20)
 threads = []
@@ -24,18 +24,18 @@ def plus_threads(index):
     global matrix_result, matrix_a, matrix_b
     result = list()
     aux = list()
-    numThreadsPlus = int(MATRIX_SIZE / 2)
+    num_threads_plus = int(MATRIX_SIZE / 2)
 
     for i in range(MATRIX_SIZE):
         result.append(matrix_aux[index][i])
 
     while(len(result) > 1):
-        for j in range(numThreadsPlus):
+        for j in range(num_threads_plus):
             threads.append(plus_thread_pool.submit(plus(aux, result, j)))
 
         result = aux.copy()
         aux.clear()
-        numThreadsPlus = int(numThreadsPlus / 2)
+        num_threads_plus = int(num_threads_plus / 2)
 
     line = int(index / MATRIX_SIZE)
     column = int(index % MATRIX_SIZE)
@@ -70,8 +70,8 @@ def run_threads():
 
 
 if __name__ == "__main__":
-    matrix_a = utils.read_matrix(utils.MATRIX_A_100_LINES)
-    matrix_b = utils.read_matrix(utils.MATRIX_B_100_LINES)
+    matrix_a = utils.read_matrix(utils.MATRIX_A_4_LINES)
+    matrix_b = utils.read_matrix(utils.MATRIX_B_4_LINES)
 
     start = time.time()
     run_threads()
