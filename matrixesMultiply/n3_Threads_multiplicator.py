@@ -5,7 +5,7 @@ import utils as utils
 
 MATRIX_SIZE = 4
 
-n2_threads_pool = ThreadPoolExecutor(max_workers=20)
+thread_pool = ThreadPoolExecutor(max_workers=20)
 threads = []
 matrix_a = utils.generate_matrix(MATRIX_SIZE)
 matrix_b = utils.generate_matrix(MATRIX_SIZE)
@@ -38,7 +38,7 @@ def run_threads():
         for j in range(MATRIX_SIZE):
             for k in range(MATRIX_SIZE):
                 threads.append(
-                    n2_threads_pool.submit(
+                    thread_pool.submit(
                         n2_threads(
                             count, i, j, k)))
             count += 1
@@ -46,7 +46,7 @@ def run_threads():
     threads.clear()
 
     for i in range(MATRIX_SIZE * MATRIX_SIZE):
-        threads.append(n2_threads_pool.submit(plus_threads(i)))
+        threads.append(thread_pool.submit(plus_threads(i)))
     wait(threads)
 
 
